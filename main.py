@@ -32,6 +32,7 @@ def jira_project_creation():
         logging.info(f"Project successfully created {jira_url}/browse/{project_key} ")
     except AtlassianApiError as e:
         logging.error(e)
+        sys.exit(2)
 
 
 def confluence_space_creation():
@@ -75,6 +76,7 @@ def confluence_space_creation():
 
     except AtlassianApiError as e:
         logging.error(e)
+        sys.exit(2)
 
 
 if __name__ == '__main__':
