@@ -1,0 +1,54 @@
+name: Create Confluence Project
+run-name: Create Confluence space ${{ inputs.space_key }}
+
+on:
+    workflow_dispatch:
+      inputs:
+        space_name:
+          description: "Space Name"
+          required: true
+          type: string
+        space_key:
+          description: "Space Key"
+          required: true
+          type: string
+        visibility:
+          description: "Visibility level"
+          required: true
+          type: choice
+          options:
+            - public (internal)
+            - private
+
+env:
+  SPACE_NAME: ${{ github.event.inputs.space_name }}
+  SPACE_KEY: ${{ github.event.inputs.space_key }}
+  VISIBILITY: ${{ github.event.inputs.visibility }}
+  JIRA_URL: ${{ vars.JIRA_URL }}
+  ATLASSIAN_USERNAME: ${{ vars.ATLASSIAN_USERNAME }}
+  ATLASSIAN_TOKEN: ${{ secrets.ATLASSIAN_TOKEN }}
+  TARGET: confluence
+
+jobs:
+  create-jira-project:
+    container:
+      image: python:3.12-slim
+    name: Echo Jira Projects Inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Inputs
+        run: |
+          echo "Space name -> ${SPACE_NAME}"
+          echo "Space key -> ${SPACE_KEY}"
+          echo "Visibility -> ${VISIBILITY}"
+
+      - uses: actions/checkout@v4
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Create Project
+        run: |
+          python main.py

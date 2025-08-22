@@ -19,9 +19,7 @@ def jira_project_creation():
         "assigneeType": "PROJECT_LEAD",
         "key": project_key,
         "leadAccountId": "557058:dc9ad4ec-abd5-4fe9-bf2c-1c02693fa1fb",
-        "issueTypeScheme": "",
         "name": project_name,
-        "projectTemplateKey": "com.atlassian.jira-core-project-templates:jira-core-simplified-process-control",
         "projectTypeKey": project_type,
     }
 
