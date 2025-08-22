@@ -17,13 +17,17 @@ on:
           required: true
           type: choice
           options:
-            - public (internal)
+            - public
             - private
+        owner:
+          description: "Space Owner"
+          type: string
 
 env:
   SPACE_NAME: ${{ github.event.inputs.space_name }}
   SPACE_KEY: ${{ github.event.inputs.space_key }}
   VISIBILITY: ${{ github.event.inputs.visibility }}
+  OWNER: ${{ github.event.inputs.owner }}
   JIRA_URL: ${{ vars.JIRA_URL }}
   ATLASSIAN_USERNAME: ${{ vars.ATLASSIAN_USERNAME }}
   ATLASSIAN_TOKEN: ${{ secrets.ATLASSIAN_TOKEN }}
@@ -41,6 +45,7 @@ jobs:
           echo "Space name -> ${SPACE_NAME}"
           echo "Space key -> ${SPACE_KEY}"
           echo "Visibility -> ${VISIBILITY}"
+          echo "Owner -> ${OWNER}"
 
       - uses: actions/checkout@v4
 
