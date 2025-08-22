@@ -21,6 +21,7 @@ on:
             - private
         owner:
           description: "Space Owner"
+          required: true
           type: string
 
 env:
