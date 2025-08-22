@@ -38,7 +38,7 @@ jobs:
   create-jira-project:
     container:
       image: python:3.12-slim
-    name: Echo Jira Projects Inputs
+    name: Confluence space creation
     runs-on: ubuntu-latest
     steps:
       - name: Show Inputs

@@ -33,7 +33,7 @@ jobs:
   create-jira-project:
     container:
       image: python:3.12-slim
-    name: Echo Jira Projects Inputs
+    name: Jira project creation
     runs-on: ubuntu-latest
     steps:
       - name: Show Inputs

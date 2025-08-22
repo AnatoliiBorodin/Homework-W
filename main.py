@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 from api.atlassian_api import AtlassianApi, AtlassianApiError
 from config import confluence_default_permissions, confluence_full_permissions, default_confluence_group, \
     default_admin_group
+from gha_logging import setup_logging
 
 
 def jira_project_creation():
@@ -78,7 +79,7 @@ def confluence_space_creation():
 
 if __name__ == '__main__':
     load_dotenv()
-    logging.basicConfig(level=logging.INFO)
+    setup_logging(level=logging.INFO)
     target = (os.getenv("TARGET") or "").strip().lower()
     if target == "jira":
         jira_project_creation()
