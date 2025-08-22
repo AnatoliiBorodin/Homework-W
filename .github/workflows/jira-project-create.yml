@@ -1,0 +1,48 @@
+name: Create Jira Project
+
+on:
+    workflow_dispatch:
+      inputs:
+        project_name:
+          description: "Project Name"
+          required: true
+          type: string
+        project_key:
+          description: "Project Key"
+          required: true
+          type: string
+        project_type:
+          description: "Project Type"
+          required: true
+          type: choice
+          options:
+            - software
+            - business
+
+env:
+  PROJECT_NAME: ${{ github.event.inputs.project_name }}
+  PROJECT_KEY: ${{ github.event.inputs.project_key }}
+  PROJECT_TYPE: ${{ github.event.inputs.project_type }}
+  TARGET: jira
+
+jobs:
+  create-jira-project:
+    container:
+      image: python:3.12-slim
+    name: Echo Jira Projects Inputs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Inputs
+        run: |
+          echo "Project name -> ${PROJECT_NAME}"
+          echo "Project key -> ${PROJECT_KEY}"
+          echo "Project type -> ${PROJECT_TYPE}"
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Create Project
+        run: |
+          python main.py
