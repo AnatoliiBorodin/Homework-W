@@ -1,5 +1,6 @@
 default_confluence_group = "confluence-public"
 default_admin_group = "org-admins"
+default_account_lead = "557058:dc9ad4ec-abd5-4fe9-bf2c-1c02693fa1fb"
 
 confluence_full_permissions = [
     ("read", "space"),

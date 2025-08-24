@@ -80,6 +80,6 @@ class AtlassianApi:
             response.raise_for_status()
         except requests.RequestException:
             if "Permission already exists" in response.text:
-                # It's okay if user already have permission
+                # It's okay if user or group already have permission
                 return
             raise AtlassianApiError(f"Failed to grant permissions for group - {group_user_name} to space {space_key} with error - {response.text}")
