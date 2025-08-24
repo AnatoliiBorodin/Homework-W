@@ -22,5 +22,5 @@ confluence_default_permissions = [
     ("create", "page"),
     ("create", "blogpost"),
     ("create", "comment"),
-    ("create", "attachment")
+    ("create", "attachment"),
 ]

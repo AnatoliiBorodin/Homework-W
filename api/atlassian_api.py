@@ -12,7 +12,7 @@ class AtlassianApi:
         self.url = url
         self.headers = {
             "Accept": "application/json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
         }
 
     def create_space(self, payload, private=False):
@@ -20,10 +20,7 @@ class AtlassianApi:
         if private:
             url += "/_private"
         response = requests.post(
-            url,
-            json=payload,
-            headers=self.headers,
-            auth=self.auth
+            url, json=payload, headers=self.headers, auth=self.auth
         )
         try:
             response.raise_for_status()
@@ -36,7 +33,7 @@ class AtlassianApi:
             f"{self.url}/rest/api/3/project",
             json=payload,
             headers=self.headers,
-            auth=self.auth
+            auth=self.auth,
         )
         try:
             response.raise_for_status()
@@ -48,33 +45,36 @@ class AtlassianApi:
         response = requests.get(
             f"{self.url}/rest/api/3/user/search?query={email}",
             headers=self.headers,
-            auth=self.auth
+            auth=self.auth,
         )
         try:
             response.raise_for_status()
         except requests.RequestException:
-            raise AtlassianApiError(f"Failed to get account_id for user - {email} with error - {response.text}")
+            raise AtlassianApiError(
+                f"Failed to get account_id for user - {email} with error - {response.text}"
+            )
         users = response.json()
         if len(users) == 0 or len(users) > 1:
-            raise AtlassianApiError(f"Failed to get account_id for user - {email} found - {len(users)} users with this email")
-        return users[0]['accountId']
+            raise AtlassianApiError(
+                f"Failed to get account_id for user - {email} found - {len(users)} users with this email"
+            )
+        return users[0]["accountId"]
 
-    def add_space_permissions(self, space_key, subject_type, group_user_name, operation_key, operation_target):
+    def add_space_permissions(
+        self, space_key, subject_type, group_user_name, operation_key, operation_target
+    ):
         payload = {
             "subject": {
                 "type": subject_type,
                 "identifier": group_user_name,
             },
-            "operation": {
-                "key": operation_key,
-                "target": operation_target
-            }
+            "operation": {"key": operation_key, "target": operation_target},
         }
         response = requests.post(
             f"{self.url}/wiki/rest/api/space/{space_key}/permission",
             json=payload,
             headers=self.headers,
-            auth=self.auth
+            auth=self.auth,
         )
         try:
             response.raise_for_status()
@@ -82,4 +82,6 @@ class AtlassianApi:
             if "Permission already exists" in response.text:
                 # It's okay if user or group already have permission
                 return
-            raise AtlassianApiError(f"Failed to grant permissions for group - {group_user_name} to space {space_key} with error - {response.text}")
+            raise AtlassianApiError(
+                f"Failed to grant permissions for group - {group_user_name} to space {space_key} with error - {response.text}"
+            )

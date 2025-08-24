@@ -9,8 +9,10 @@ __all__ = [
     "gha_mask_env",
 ]
 
+
 class GitHubActionsFormatter(logging.Formatter):
     """Format logs using GitHub Actions workflow commands."""
+
     def format(self, record):
         msg = super().format(record)
         if record.levelno >= logging.ERROR:
@@ -21,6 +23,7 @@ class GitHubActionsFormatter(logging.Formatter):
             return f"::notice::{msg}"
         return msg
 
+
 def _setup_gha_formatter(level: int):
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(GitHubActionsFormatter("%(levelname)s: %(message)s"))
@@ -28,6 +31,7 @@ def _setup_gha_formatter(level: int):
     root.handlers.clear()
     root.addHandler(handler)
     root.setLevel(level)
+
 
 def _setup_plain_formatter(level: int):
     # Nice local console format
@@ -39,6 +43,7 @@ def _setup_plain_formatter(level: int):
         datefmt=datefmt,
         handlers=[logging.StreamHandler(sys.stdout)],
     )
+
 
 def setup_logging(level=logging.INFO, force_gha: bool | None = None):
     """
@@ -53,6 +58,7 @@ def setup_logging(level=logging.INFO, force_gha: bool | None = None):
         _setup_gha_formatter(level)
     else:
         _setup_plain_formatter(level)
+
 
 @contextmanager
 def gha_group(title: str):
@@ -70,6 +76,7 @@ def gha_group(title: str):
     finally:
         if in_gha:
             print("::endgroup::")
+
 
 def gha_mask_env(*names: str):
     """Mask sensitive env vars so they appear as *** in GitHub Actions logs."""

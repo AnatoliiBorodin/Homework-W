@@ -5,8 +5,13 @@ import sys
 from dotenv import load_dotenv
 
 from api.atlassian_api import AtlassianApi, AtlassianApiError
-from config import confluence_default_permissions, confluence_full_permissions, default_confluence_group, \
-    default_admin_group, default_account_lead
+from config import (
+    confluence_default_permissions,
+    confluence_full_permissions,
+    default_confluence_group,
+    default_admin_group,
+    default_account_lead,
+)
 from gha_logging import setup_logging
 
 
@@ -32,7 +37,9 @@ def jira_project_creation():
     }
 
     try:
-        logging.info(f"Creating project {project_key} with following payload - {payload}")
+        logging.info(
+            f"Creating project {project_key} with following payload - {payload}"
+        )
         jira.create_project(payload)
         logging.info(f"Project successfully created {jira_url}/browse/{project_key} ")
     except AtlassianApiError as e:
@@ -42,7 +49,9 @@ def jira_project_creation():
 
 def confluence_space_creation():
     # Load required environment variables for Confluence
-    jira_url = os.getenv("JIRA_URL")  # same URL used for Jira and Confluence (cloud base URL)
+    jira_url = os.getenv(
+        "JIRA_URL"
+    )  # same URL used for Jira and Confluence (cloud base URL)
     username = os.getenv("ATLASSIAN_USERNAME")
     token = os.getenv("ATLASSIAN_TOKEN")
     space_key = os.getenv("SPACE_KEY")
@@ -69,30 +78,48 @@ def confluence_space_creation():
 
         logging.info(f"Creating space {space_key} with following payload - {payload}")
         confluence.create_space(payload, private)
-        logging.info(f"Project successfully created {jira_url}/wiki/spaces/{space_key}/overview")
+        logging.info(
+            f"Project successfully created {jira_url}/wiki/spaces/{space_key}/overview"
+        )
 
         # Assign default group permissions if space is not private
         if not private:
             for permission in confluence_default_permissions:
                 permission_key, permission_target = permission
                 confluence.add_space_permissions(
-                    space_key, "group", default_confluence_group, permission_key, permission_target
+                    space_key,
+                    "group",
+                    default_confluence_group,
+                    permission_key,
+                    permission_target,
                 )
-            logging.info(f"Permission for public group - {confluence_default_permissions} granted")
+            logging.info(
+                f"Permission for public group - {confluence_default_permissions} granted"
+            )
 
         # Grant full permissions to owner and admin group
         for permission in confluence_full_permissions:
             permission_key, permission_target = permission
-            confluence.add_space_permissions(space_key, "user", owner_account_id, permission_key, permission_target)
-            confluence.add_space_permissions(space_key, "group", default_admin_group, permission_key, permission_target)
-        logging.info(f"Permission for owner - {owner} and admin group - {default_admin_group} granted")
+            confluence.add_space_permissions(
+                space_key, "user", owner_account_id, permission_key, permission_target
+            )
+            confluence.add_space_permissions(
+                space_key,
+                "group",
+                default_admin_group,
+                permission_key,
+                permission_target,
+            )
+        logging.info(
+            f"Permission for owner - {owner} and admin group - {default_admin_group} granted"
+        )
 
     except AtlassianApiError as e:
         logging.error(e)
         sys.exit(2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Load .env file values into environment
     load_dotenv()
 
