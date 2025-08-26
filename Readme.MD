@@ -26,3 +26,18 @@ It can be executed locally or triggered in CI/CD pipelines.
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+```
+To run a script locally you need to set ENV variables, otherwise use Workflow
+```
+JIRA_URL=https://xxx.atlassian.net
+ATLASSIAN_USERNAME=some_email@example.com
+ATLASSIAN_TOKEN=TOKEN_FROM_YOUR_ATLASSIAN_PROFILE
+PROJECT_KEY=TEST
+PROJECT_NAME=Project Test Name
+PROJECT_TYPE=software or business
+TARGET=jira or confluence
+SPACE_KEY=TEST
+SPACE_NAME=Test Space
+OWNER=some_email@example.com
+VISIBILITY=private or public
+```
